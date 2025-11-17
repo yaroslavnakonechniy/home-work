@@ -1,60 +1,77 @@
-console.log('=======================#1======================');
-class CalorieCalculator {
-  constructor() {
-    this.product = new Map();
+
+console.log("====================#1=====================");
+function sumArray(numbers) {
+  return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+}
+
+const exampleArray = [1, 2, 3, 4, 5]
+const sum = sumArray(exampleArray)
+console.log('Сума елементів масиву:', sum) // Виведення суми
+console.log("=========================================");
+console.log("====================#2=====================");
+
+function doubleArrayElements(numbers) {
+  return numbers.map((number) => number * 2);
+}
+
+const exampleArray2 = [1, 2, 3, 4, 5];
+const doubledArray = doubleArrayElements(exampleArray2)
+console.log('Подвоєні елементи масиву:', doubledArray) // Виведення подвоєних елементів
+
+console.log("=========================================");
+console.log("====================#3=====================");
+
+class SkillsManager {
+  constructor(skills = []){
+    this.skills = skills;
   }
 
-  addProduct(productName, productCalories) {
-    this.product.set(productName, productCalories);
+  addSkill(skill){
+    if(typeof(skill) === 'string' && skill.length >= 2){
+      this.skills.push(skill);
+      return skill;
+    }else{
+      return null;
+    }
   }
 
-  getProductCalories(productName) {
-    if(this.product.get(productName))
-        return this.product.get(productName);
-    else return 'Product not found';
-  }
-
-  removeProduct(productName) {
-    return this.product.delete(productName);
+  getAllSkills(){
+    return this.skills;
   }
 }
 
- const calorieCalculator = new CalorieCalculator()
- calorieCalculator.addProduct('Apple', 52)
- calorieCalculator.addProduct('Banana', 89)
+const skillsManager = new SkillsManager()
+console.log(skillsManager.addSkill('JavaScript'))
+console.log(skillsManager.addSkill('C'))
+console.log(skillsManager.addSkill('CSS'))
+console.log(skillsManager.addSkill('C'))
+console.log(skillsManager.getAllSkills())
+console.log("=========================================");
 
- console.log(calorieCalculator.getProductCalories('Apple')) // 52
- console.log(calorieCalculator.getProductCalories('Banana')) // 89
+console.log("===========================#4==================");
 
- calorieCalculator.removeProduct('Apple')
- console.log(calorieCalculator.getProductCalories('Apple')) // Product not found
-console.log('=============================================');
+function DateCalculator(initialDate) {
 
-console.log('=======================#2======================');
-class UniqueUsernames {
-  constructor() {
-    this.user = new Set();
+  const date = new Date(initialDate);
+
+  this.addDays = function(days) {
+    
+    date.setDate(date.getDate() + days);
+    return this;
   }
 
-  addUser(username) {
-    this.user.add(username);
+  this.subtractDays = function(days) {
+    
+    date.setDate(date.getDate() - days);
+    return this;
   }
 
-  exists(username) {
-    return this.user.has(username);
-  }
-
-  count() {
-    return this.user.size;
+  this.getResult = function() {
+    return date.toISOString().split('T')[0];
   }
 }
 
-// Демонстрація використання
- const uniqueUsernames = new UniqueUsernames()
- uniqueUsernames.addUser('john_doe')
- uniqueUsernames.addUser('jane_doe')
- uniqueUsernames.addUser('john_doe') // Ця дія не змінить набір, оскільки 'john_doe' вже існує
+const dateCalculator = new DateCalculator('2023-01-01')
+dateCalculator.addDays(5)
+console.log(dateCalculator.getResult()) // Виводить нову дату після додавання днів
 
- console.log(`Існує 'john_doe': ${uniqueUsernames.exists('john_doe')}`) // true
- console.log(`Кількість унікальних імен: ${uniqueUsernames.count()}`) // 2
- console.log('=============================================');
