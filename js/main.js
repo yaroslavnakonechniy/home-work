@@ -1,81 +1,43 @@
-
-console.log("====================#1=====================");
-function sumArray(numbers) {
-  return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+console.log('===================#1====================');
+function createDomElement(tagName, textContent, container) {
+  const element = document.createElement(tagName);
+  element.textContent = textContent;
+  container.append(element);
+  return  element;
 }
 
-const exampleArray = [1, 2, 3, 4, 5]
-const sum = sumArray(exampleArray)
-console.log('Сума елементів масиву:', sum) // Виведення суми
-console.log("=========================================");
-console.log("====================#2=====================");
+const container = document.body // В якості прикладу використовуємо body як контейнер
+console.log(createDomElement('p', 'This paragraph has been added to the specified container.', container));
+console.log('=======================================');
 
-function doubleArrayElements(numbers) {
-  return numbers.map((number) => number * 2);
+console.log('==================#2=====================');
+
+function setUserInfoCookie(key, value) {
+  const cookie = `${key}=${value}`;
+  const date = new Date(Date.now() + 10000).toUTCString();
+  document.cookie = `userInfo=${cookie}; expires=${date}; path=/`;
+
+  console.log(`Cookie userInfo збережено: ${cookie} (10 сек)`);
+  console.log(document.cookie);
 }
 
-const exampleArray2 = [1, 2, 3, 4, 5];
-const doubledArray = doubleArrayElements(exampleArray2)
-console.log('Подвоєні елементи масиву:', doubledArray) // Виведення подвоєних елементів
+setUserInfoCookie('language', 'en');
+console.log('Після встановлення:', document.cookie);
 
-console.log("=========================================");
-console.log("====================#3=====================");
+console.log('=======================================');
 
-class SkillsManager {
-  constructor(skills = []){
-    this.skills = skills;
-  }
-
-  addSkill(skill){
-    if(typeof(skill) === 'string' && skill.length >= 2){
-      this.skills.push(skill);
-      return skill;
-    }else{
-      return null;
-    }
-  }
-
-  getAllSkills(){
-    return this.skills;
-  }
+console.log('==================#3=====================');
+function saveUserInfo(key, value) {
+  sessionStorage.setItem(key, value);
+  console.log(`Saved ${key}: ${value}`);
 }
 
-const skillsManager = new SkillsManager()
-console.log(skillsManager.addSkill('JavaScript'))
-console.log(skillsManager.addSkill('C'))
-console.log(skillsManager.addSkill('CSS'))
-console.log(skillsManager.addSkill('C'))
-console.log(skillsManager.getAllSkills())
-console.log("=========================================");
-
-console.log("===========================#4==================");
-
-function DateCalculator(initialDate) {
-
-  const date = new Date(initialDate);
-
-  this.addDays = function(days) {
-    
-    date.setDate(date.getDate() + days);
-    return this;
-  }
-
-  this.subtractDays = function(days) {
-    
-    date.setDate(date.getDate() - days);
-    return this;
-  }
-
-  this.getResult = function() {
-    return date.toISOString().split('T')[0];
-  }
+function getUserInfo(key) {
+  const sessionData = sessionStorage.getItem(key);
+  console.log('Збережені тимчасові дані:', sessionData);
+  return sessionData;
 }
 
-const dateCalculator = new DateCalculator('2023-01-01')
-dateCalculator.addDays(5)
-console.log(dateCalculator.getResult()) // Виводить нову дату після додавання днів
-
-dateCalculator.subtractDays(3)
-console.log(dateCalculator.getResult()) // Виводить нову дату після віднімання днів
-console.log("==========================================");
-
+saveUserInfo('username', 'JohnDoe');
+console.log(getUserInfo('username')); // Виведе: JohnDoe
+console.log('=======================================');
