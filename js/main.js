@@ -12,24 +12,25 @@ const slider = (function (){
   const curentPosition = () => getIndex(curentIndex);
 
   prev.addEventListener('click', () => {
-
-    const prev = curentPosition();
-    prevIndex();
-    const curent = curentPosition();
-    
-    items[prev].style.opacity = 0;
-    items[curent].style.opacity = 1;
+    renderSlide(prevIndex);
   });
 
   next.addEventListener('click', () => {
+    renderSlide(nextIndex);
+  });
 
+  const renderSlide = (action) => {
     const prev = curentPosition();
-    nextIndex();
+    action();
     const curent = curentPosition();
 
     items[prev].style.opacity = 0;
     items[curent].style.opacity = 1;
-  });
+  }
+
+  setInterval(() => {
+    renderSlide(nextIndex)
+  }, 1000);
 
 
   const init = () =>{
