@@ -1,5 +1,29 @@
 const slider = (function (){
-  let curentIndex = 0;
+  
+  //State
+  const state = {
+    duration: 1000,
+    numberOfSlides: 0,
+    elements: {
+      container: null,
+      items: null,
+    },
+    curentIndex: 0,
+
+    increaseIndex() {
+      return ++this.curentIndex;
+    },
+    decreaseIndex() {
+      return --this.curentIndex;
+    },
+    getIndex() {
+      return this.curentIndex;
+    },
+    setElements(elements) {
+      this.elements.container = document.querySelector(elements.container);
+      this.elements.items = document.querySelectorAll(elements.items);
+    }
+  }
  
   //Events
   const events = (function(){
@@ -23,7 +47,7 @@ const slider = (function (){
     }
 
     const intervalEvents = {
-      start(handelInterval, duration = 1000){
+      start(handelInterval, duration){
         timer = setInterval(handelInterval, duration);
       },
 
@@ -48,44 +72,42 @@ const slider = (function (){
 
   }());
 
-  const items = document.querySelectorAll('.slider__item');
+  //const items = document.querySelectorAll('.slider__item');
 
   const getIndex = (curentIndex) => curentIndex - 5 * (Math.floor(curentIndex / 5));
-  const prevIndex = () => getIndex(--curentIndex);
-  const nextIndex = () => getIndex(++curentIndex);
-  const curentPosition = () => getIndex(curentIndex);
-
-  const eventsInstance = events.init();
-
-  eventsInstance.interval.start(() => {
-    renderSlide(nextIndex);
-  })
-
-  eventsInstance.click.onPrev(() => {
-    renderSlide(prevIndex);
-  });
-
-  eventsInstance.click.onNext(() => {
-    renderSlide(nextIndex);
-  })
-
-
+  const prevIndex = () => getIndex(state.decreaseIndex());
+  const nextIndex = () => getIndex(state.increaseIndex());
+  const curentPosition = () => getIndex(state.getIndex());
 
   const renderSlide = (action) => {
     const prev = curentPosition();
     action();
     const curent = curentPosition();
 
-    items[prev].style.opacity = 0;
-    items[curent].style.opacity = 1;
+    state.elements.items[prev].style.opacity = 0;
+    state.elements.items[curent].style.opacity = 1;
   }
 
 /*   setInterval(() => {
     renderSlide(nextIndex)
   }, 1000); */
 
-  const init = () =>{
+  const init = (elements, options = {duration: state.duration}) =>{
+    state.setElements(elements);
 
+    const eventsInstance = events.init();
+
+    eventsInstance.interval.start(() => {
+      renderSlide(nextIndex);
+    }, options.duration);
+
+    eventsInstance.click.onPrev(() => {
+      renderSlide(prevIndex);
+    });
+
+    eventsInstance.click.onNext(() => {
+      renderSlide(nextIndex);
+    })
   };
 
   return {
