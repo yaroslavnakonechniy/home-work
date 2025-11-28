@@ -1,54 +1,43 @@
-console.log('===================#1==========================================================================');
-function createTestList() {
-  document.body.innerHTML = `
-    <button id="myButton">click</button>
-    <ul id="testList">
-      <li>Item 1</li>
-      <li>Item 2</li>
-      <li>Item 3</li>
-    </ul>
-    `
-}
+const slider = (function (){
+  let curentIndex = 0;
+ 
 
-createTestList();
+  const prev = document.getElementById('slider-prev');
+  const next = document.getElementById('slider-next');
+  const items = document.querySelectorAll('.slider__item');
 
-function handleButtonClick(buttonId, message) {
-  const button = document.getElementById(buttonId);
+  const getIndex = (curentIndex) => curentIndex % 5;
+  const prevIndex = () => getIndex(--curentIndex);
+  const nextIndex = () => getIndex(++curentIndex);
+  const curentPosition = () => getIndex(curentIndex);
 
-  button.addEventListener('click', () =>{
-    console.log(message);
+  prev.addEventListener('click', () => {
+
+    const prev = curentPosition();
+    prevIndex();
+    const curentIndex = curentPosition();
+    
+    items[prev].style.opacity = 0;
+    items[curentIndex].style.opacity = 1;
   });
-}
 
-handleButtonClick('myButton', 'Button clicked!'); 
+  next.addEventListener('click', () => {
 
-console.log('===============================================================================================');
+    const prev = curentPosition();
+    nextIndex();
+    const curentIndex = curentPosition();
 
-console.log('==================#2=====================');
-
-function trackMousePosition() {
-  document.addEventListener("mousemove", (event) => {
-    console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
+    items[prev].style.opacity = 0;
+    items[curentIndex].style.opacity = 1;
   });
-}
-
-trackMousePosition();
-
-console.log('=======================================');
-
-console.log('==================#3=====================');
 
 
-function setupEventDelegation(selector) {
-  const list = document.getElementById('testList');
+  const init = () =>{
 
-  list.addEventListener('click', (event) => {
-    if(event.target.tagName === "LI"){
-      console.log(`Клікнуто на ${event.target.textContent}`);
-    }
-  })
+  };
 
-}
+  return {
+    init,
+  }
 
-setupEventDelegation('#testList')
-console.log('=======================================');
+}());

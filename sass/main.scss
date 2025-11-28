@@ -1,0 +1,92 @@
+.slider {
+	position: relative;
+	width: 400px;
+	height: 400px;
+    margin: 0 auto;
+	background-color: rgb(176, 207, 180);
+	text-align: center;
+	padding: 20px;
+
+
+	&__controls {
+		margin: 20px;
+	}
+
+	&__play-btn {
+
+	}
+
+	&__prev-btn {
+
+	}
+
+	&__next-btn {
+
+	}
+
+	&__points {
+		display: flex;
+		justify-content: center;
+		margin: 20px;
+		
+
+		span {
+			width: 20px;
+			height: 20px;
+			background-color: #ccc;
+			border-radius: 50%;
+			margin: 5px;
+			cursor: pointer;
+
+			&.active {
+				width: 20px;
+				height: 20px;
+				background-color: #2793d1;
+				border-radius: 50%;
+				cursor: pointer;
+			}
+		}
+	}
+
+	&__list{
+		position: relative;
+		display: flex;
+		margin-top: 70px;
+	}
+
+	&__item {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%); /* центр */
+		width: 200px;
+		height: 100px;
+		display: flex;
+		font-size: 54px;
+		align-items: center;
+		justify-content: center;
+		transition: opacity .4s ease, transform .4s ease;
+		opacity: 0;
+
+		&:nth-child(1){
+			background-color: rgb(242, 13, 13);
+			opacity: 1;
+		}
+		&:nth-child(2){
+			background-color: rgb(66, 10, 170);
+			
+		}
+		&:nth-child(3){
+			background-color: rgb(114, 79, 9);
+			
+		}
+		&:nth-child(4){
+			background-color: rgb(5, 220, 30);
+			
+		}
+		&:nth-child(5){
+			background-color: rgb(225, 232, 14);
+			
+		}
+	}
+}
