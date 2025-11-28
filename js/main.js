@@ -6,7 +6,7 @@ const slider = (function (){
   const next = document.getElementById('slider-next');
   const items = document.querySelectorAll('.slider__item');
 
-  const getIndex = (curentIndex) => curentIndex % 5;
+  const getIndex = (curentIndex) => curentIndex - 5 * (Math.floor(curentIndex / 5));
   const prevIndex = () => getIndex(--curentIndex);
   const nextIndex = () => getIndex(++curentIndex);
   const curentPosition = () => getIndex(curentIndex);
@@ -15,20 +15,20 @@ const slider = (function (){
 
     const prev = curentPosition();
     prevIndex();
-    const curentIndex = curentPosition();
+    const curent = curentPosition();
     
     items[prev].style.opacity = 0;
-    items[curentIndex].style.opacity = 1;
+    items[curent].style.opacity = 1;
   });
 
   next.addEventListener('click', () => {
 
     const prev = curentPosition();
     nextIndex();
-    const curentIndex = curentPosition();
+    const curent = curentPosition();
 
     items[prev].style.opacity = 0;
-    items[curentIndex].style.opacity = 1;
+    items[curent].style.opacity = 1;
   });
 
 
