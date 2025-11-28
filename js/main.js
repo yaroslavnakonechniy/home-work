@@ -3,6 +3,7 @@ const slider = (function (){
   //State
   const state = {
     duration: 0,
+    mode: 'play',
     numberOfSlides: 0,
     elements: {
       container: null,
@@ -37,7 +38,10 @@ const slider = (function (){
       this.elements.buttons.play = document.getElementById('slider-play');
 
       this.setElements(elements);
-
+    },
+    toggleMode(){
+      this.mode = this.mode === 'play' ? 'pause' : 'play';
+      return this.mode;
     },
 
   }
@@ -47,20 +51,28 @@ const slider = (function (){
     let prev = null;
     let next = null;
     let timer = null;
+    let play = null;
 
     let prevFn = null;
     let nextFn = null;
+    let playFn = null;
 
     const clickEvents = {
       onPrev(handelEvent) {
         prevFn = handelEvent;
         prev.addEventListener('click', prevFn);
       },
-
       onNext(handelEvent) {
         nextFn = handelEvent;
         next.addEventListener('click', nextFn);
-      }
+      },
+      onPlay(handelPlay){
+        playFn = () => {
+          handelPlay(state.toggleMode());
+        };
+        
+        play.addEventListener('click', playFn);
+      },
     }
 
     const intervalEvents = {
@@ -76,6 +88,7 @@ const slider = (function (){
     const init = () => {
       prev = state.elements.buttons.prev;
       next = state.elements.buttons.next;
+      play = state.elements.buttons.play;
 
       return {
         click: clickEvents,
@@ -103,6 +116,13 @@ const slider = (function (){
     state.elements.items[curent].style.opacity = 1;
   }
 
+  const renderPlay = () => {
+    const player = state.elements.buttons.play;
+
+    player.classList.toggle('active');
+    player.textContent = player.classList.contains('active') ? "Stop" : "Play";
+  }
+
   const init = (elements, options) =>{
     state.initElements(elements);
     state.setDuration(options.duration);
@@ -115,6 +135,21 @@ const slider = (function (){
 
     eventsInstance.click.onPrev(() => {
       renderSlide(prevIndex);
+    });
+
+    eventsInstance.click.onPlay((mode) => {
+      if(mode === 'pause'){
+        eventsInstance.interval.stop();
+        //renderPlay(mode);
+      } else {
+        //renderPlay(mode);
+        eventsInstance.interval.start(() => {
+          renderSlide(nextIndex);
+        }, state.duration);
+      }
+
+      renderPlay(mode);
+      
     });
 
     eventsInstance.click.onNext(() => {
