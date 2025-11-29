@@ -17,7 +17,7 @@ const slider = (function (){
         prev: null,
         next: null,
         play: null,
-      }
+      },
     },
     curentIndex: 0,
 
@@ -87,6 +87,7 @@ const slider = (function (){
     let pointsFn = null;
     let mousedownFn = null;
     let mouseupFn = null;
+    let keyFn = null;
 
     const clickEvents = {
       onPrev(handelEvent) {
@@ -147,6 +148,15 @@ const slider = (function (){
       slides.addEventListener('touchend', mouseupFn);
     }
 
+    const keyboardEvents = {
+      onKey(handelKey) {
+        keyFn = (e) => {
+          handelKey(e);
+        };
+        document.addEventListener('keydown', keyFn);
+      }
+    };
+
     const init = () => {
       prev = state.elements.buttons.prev;
       next = state.elements.buttons.next;
@@ -158,6 +168,7 @@ const slider = (function (){
         click: clickEvents,
         interval: intervalEvents,
         swipes: swipesEvents,
+        keyboard: keyboardEvents,
       }
     }
 
@@ -184,6 +195,7 @@ const slider = (function (){
         pointsFn = null;
         mousedownFn = null;
         mouseupFn = null;
+        keyFn = null;
       },
     };
   }());
@@ -220,6 +232,11 @@ const slider = (function (){
 
     player.classList.toggle('active');
     player.textContent = player.classList.contains('active') ? "Stop" : "Play";
+  }
+
+  const handleKeySlide = (e) => {
+    if (e.code === 'ArrowLeft') render(prevIndex);
+    if (e.code === 'ArrowRight') render(nextIndex);
   }
 
   const init = (elements, options) =>{
@@ -262,7 +279,9 @@ const slider = (function (){
     eventsInstance.swipes({
       toLeft: () => render(prevIndex),
       toRight: () => render(nextIndex),
-    })
+    });
+
+    eventsInstance.keyboard.onKey(handleKeySlide);
   };
 
   return {
