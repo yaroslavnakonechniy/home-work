@@ -7,6 +7,7 @@ const slider = (function (){
     numberOfSlides: 0,
     elements: {
       container: null,
+      list: null,
       items: null,
       points: {
         container: null,
@@ -54,6 +55,7 @@ const slider = (function (){
         this.elements.points.items = this.elements.points.container.children;
     },
     initElements(elements){
+      this.elements.list = document.getElementById('slider-list');
       this.elements.buttons.prev = document.getElementById('slider-prev');
       this.elements.buttons.next = document.getElementById('slider-next');
       this.elements.buttons.play = document.getElementById('slider-play');
@@ -77,11 +79,14 @@ const slider = (function (){
     let timer = null;
     let play = null;
     let points = null;
+    let slides = null;
 
     let prevFn = null;
     let nextFn = null;
     let playFn = null;
     let pointsFn = null;
+    let mousedownFn = null;
+    let mouseupFn = null;
 
     const clickEvents = {
       onPrev(handelEvent) {
@@ -118,15 +123,41 @@ const slider = (function (){
       }
     }
 
+    const swipesEvents = (swipes) => {
+      let startPositionX = 0;
+      const getX = (e) => e.offsetX || e.changedTouches?.[0].pageX;
+    
+      mousedownFn = (e) => {
+        e.preventDefault();
+
+        startPositionX = getX(e);
+      };
+
+      mouseupFn = (e) => {
+        e.preventDefault();
+
+        getX(e) < startPositionX ? swipes.toLeft() : swipes.toRight();
+
+        startPositionX = 0;
+      };
+
+      slides.addEventListener('mousedown', mousedownFn);
+      slides.addEventListener('mouseup', mouseupFn);
+      slides.addEventListener('touchstart', mousedownFn);
+      slides.addEventListener('touchend', mouseupFn);
+    }
+
     const init = () => {
       prev = state.elements.buttons.prev;
       next = state.elements.buttons.next;
       play = state.elements.buttons.play;
       points = state.elements.points;
+      slides = state.elements.list;
 
       return {
         click: clickEvents,
         interval: intervalEvents,
+        swipes: swipesEvents,
       }
     }
 
@@ -145,11 +176,14 @@ const slider = (function (){
         timer = null;
         play = null;
         points = null;
+        slides = null;
 
         prevFn = null;
         nextFn = null;
         playFn = null;
         pointsFn = null;
+        mousedownFn = null;
+        mouseupFn = null;
       },
     };
   }());
@@ -224,6 +258,11 @@ const slider = (function (){
     eventsInstance.interval.start(() => {
       render(nextIndex);
     }, state.duration);
+
+    eventsInstance.swipes({
+      toLeft: () => render(prevIndex),
+      toRight: () => render(nextIndex),
+    })
   };
 
   return {
