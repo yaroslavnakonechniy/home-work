@@ -1,3 +1,4 @@
+
 const slider = (function (){
   
   //State
