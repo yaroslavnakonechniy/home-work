@@ -35,6 +35,10 @@ const slider = (function (){
     getIndex() {
       return this.curentIndex;
     },
+    setIndex(index) {
+      this.curentIndex = index;
+      return this.curentIndex;
+    },
     setElements(elements) {
       this.elements.container = document.querySelector(elements.container);
       this.elements.items = document.querySelectorAll(elements.items);
@@ -72,10 +76,12 @@ const slider = (function (){
     let next = null;
     let timer = null;
     let play = null;
+    let points = null;
 
     let prevFn = null;
     let nextFn = null;
     let playFn = null;
+    let pointsFn = null;
 
     const clickEvents = {
       onPrev(handelEvent) {
@@ -86,13 +92,20 @@ const slider = (function (){
         nextFn = handelEvent;
         next.addEventListener('click', nextFn);
       },
-      onPlay(handelPlay){
+      onPlay(handelPlay) {
         playFn = () => {
           handelPlay(state.toggleMode());
         };
         
         play.addEventListener('click', playFn);
       },
+      onPoint(handelPoint) {
+        pointsFn = (event) => {
+          event.target.closest('span') && handelPoint(event.target.dataset.index)
+        };
+
+        points.container.addEventListener('click', pointsFn);
+      }
     }
 
     const intervalEvents = {
@@ -109,6 +122,7 @@ const slider = (function (){
       prev = state.elements.buttons.prev;
       next = state.elements.buttons.next;
       play = state.elements.buttons.play;
+      points = state.elements.points;
 
       return {
         click: clickEvents,
@@ -118,22 +132,53 @@ const slider = (function (){
 
     return {
       init,
-    }
+      destroy() {
+        prev.removeEventListener('click', prevFn);
+        next.removeEventListener('click', nextFn);
+        play.removeEventListener('click', playFn);
+        points.container.removeEventListener('click', pointsFn);
 
+        intervalEvents.stop();
+
+        prev = null;
+        next = null;
+        timer = null;
+        play = null;
+        points = null;
+
+        prevFn = null;
+        nextFn = null;
+        playFn = null;
+        pointsFn = null;
+      },
+    };
   }());
 
+  //Navigation
   const getIndex = (curentIndex) => curentIndex - state.numberOfSlides * (Math.floor(curentIndex / state.numberOfSlides));
   const prevIndex = () => getIndex(state.decreaseIndex());
   const nextIndex = () => getIndex(state.increaseIndex());
   const curentPosition = () => getIndex(state.getIndex());
+  const moveTo = (index) => getIndex(state.setIndex(index));
 
-  const renderSlide = (action) => {
-    const prev = curentPosition();
+  //Render
+  const render = (action = () => {}) => {
+    const prevIndex = curentPosition();
     action();
-    const curent = curentPosition();
+    const curentIndex = curentPosition();
 
-    state.elements.items[prev].style.opacity = 0;
-    state.elements.items[curent].style.opacity = 1;
+    renderSlide(prevIndex, curentIndex);
+    renderPoints(prevIndex, curentIndex);
+  }
+
+  const renderSlide = (prevIndex, curentIndex) => {
+    state.elements.items[prevIndex].style.opacity = 0;
+    state.elements.items[curentIndex].style.opacity = 1;
+  }
+
+  const renderPoints = (prevIndex, curentIndex) => {
+    state.elements.points.items[prevIndex].classList.remove('active');
+    state.elements.points.items[curentIndex].classList.add('active');
   }
 
   const renderPlay = () => {
@@ -149,22 +194,22 @@ const slider = (function (){
 
     const eventsInstance = events.init();
 
-    eventsInstance.interval.start(() => {
-      renderSlide(nextIndex);
-    }, state.duration);
+    render();
 
     eventsInstance.click.onPrev(() => {
-      renderSlide(prevIndex);
+      render(prevIndex);
+    });
+
+    eventsInstance.click.onNext(() => {
+      render(nextIndex);
     });
 
     eventsInstance.click.onPlay((mode) => {
       if(mode === 'pause'){
         eventsInstance.interval.stop();
-        //renderPlay(mode);
       } else {
-        //renderPlay(mode);
         eventsInstance.interval.start(() => {
-          renderSlide(nextIndex);
+          render(nextIndex);
         }, state.duration);
       }
 
@@ -172,13 +217,20 @@ const slider = (function (){
       
     });
 
-    eventsInstance.click.onNext(() => {
-      renderSlide(nextIndex);
-    })
+    eventsInstance.click.onPoint((index) => {
+      render(() => {moveTo(index)});
+    });
+
+    eventsInstance.interval.start(() => {
+      render(nextIndex);
+    }, state.duration);
   };
 
   return {
     init,
+    destroy() {
+      events.destroy();
+    }
   }
 
 }());

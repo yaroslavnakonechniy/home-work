@@ -25,11 +25,7 @@
   cursor: pointer;
 }
 .slider__points span.active {
-  width: 20px;
-  height: 20px;
   background-color: #2793d1;
-  border-radius: 50%;
-  cursor: pointer;
 }
 .slider__list {
   position: relative;
