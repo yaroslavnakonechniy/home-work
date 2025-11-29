@@ -8,6 +8,10 @@ const slider = (function (){
     elements: {
       container: null,
       items: null,
+      points: {
+        container: null,
+        items: null,
+      },
       buttons: {
         prev: null,
         next: null,
@@ -16,6 +20,9 @@ const slider = (function (){
     },
     curentIndex: 0,
 
+    setNumberOfSlides() {
+      this.numberOfSlides = this.elements.items.length;
+    },
     setDuration(duration = 1000){
       this.duration = duration;
     },
@@ -32,12 +39,25 @@ const slider = (function (){
       this.elements.container = document.querySelector(elements.container);
       this.elements.items = document.querySelectorAll(elements.items);
     },
+    generatePoints() {
+      const pointsTemplate = new Array(this.numberOfSlides)
+        .fill()
+        .reduce((template,  _, index) => {
+          return `${template}<span data-index='${index}'></span>`
+        }, '');
+
+        this.elements.points.container.innerHTML = pointsTemplate;
+        this.elements.points.items = this.elements.points.container.children;
+    },
     initElements(elements){
       this.elements.buttons.prev = document.getElementById('slider-prev');
       this.elements.buttons.next = document.getElementById('slider-next');
       this.elements.buttons.play = document.getElementById('slider-play');
+      this.elements.points.container = document.getElementById('slider-points');
 
       this.setElements(elements);
+      this.setNumberOfSlides();
+      this.generatePoints();
     },
     toggleMode(){
       this.mode = this.mode === 'play' ? 'pause' : 'play';
@@ -102,7 +122,7 @@ const slider = (function (){
 
   }());
 
-  const getIndex = (curentIndex) => curentIndex - 5 * (Math.floor(curentIndex / 5));
+  const getIndex = (curentIndex) => curentIndex - state.numberOfSlides * (Math.floor(curentIndex / state.numberOfSlides));
   const prevIndex = () => getIndex(state.decreaseIndex());
   const nextIndex = () => getIndex(state.increaseIndex());
   const curentPosition = () => getIndex(state.getIndex());
