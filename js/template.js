@@ -6,7 +6,7 @@ const SLIDER_POINTS = 'slider-points';
 const SLIDER_LIST = 'slider-list';
 
 class Template {
-    constructor(state) {
+    constructor({state}) {
         this.state = state;
         this.elements = {
             container: null,
