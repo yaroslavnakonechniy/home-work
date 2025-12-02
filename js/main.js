@@ -50,7 +50,7 @@ const slider = (function (){
         .reduce((template,  _, index) => {
           return `${template}<span data-index='${index}'></span>`
         }, '');
-
+        
         this.elements.points.container.innerHTML = pointsTemplate;
         this.elements.points.items = this.elements.points.container.children;
     },
