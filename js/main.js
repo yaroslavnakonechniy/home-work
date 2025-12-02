@@ -151,8 +151,9 @@ const slider = (function (){
     const keyboardEvents = {
       onKey(handelKey) {
         keyFn = (e) => {
-          handelKey(e);
+          e.code === 'ArrowLeft' ? handelKey.toLeft() : handelKey.toRight();
         };
+
         document.addEventListener('keydown', keyFn);
       }
     };
@@ -234,11 +235,6 @@ const slider = (function (){
     player.textContent = player.classList.contains('active') ? "Stop" : "Play";
   }
 
-  const handleKeySlide = (e) => {
-    if (e.code === 'ArrowLeft') render(prevIndex);
-    if (e.code === 'ArrowRight') render(nextIndex);
-  }
-
   const init = (elements, options) =>{
     state.initElements(elements);
     state.setDuration(options.duration);
@@ -281,7 +277,10 @@ const slider = (function (){
       toRight: () => render(nextIndex),
     });
 
-    eventsInstance.keyboard.onKey(handleKeySlide);
+    eventsInstance.keyboard.onKey({
+      toLeft: () => render(prevIndex),
+      toRight: () => render(nextIndex),
+    });
   };
 
   return {
