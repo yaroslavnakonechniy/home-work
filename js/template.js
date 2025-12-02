@@ -26,6 +26,7 @@ class Template {
 
     init(elements) {
         this.#setElements(elements);
+        this.#createAnimation();
 
         this.elements.list = document.getElementById(SLIDER_LIST);
         this.elements.buttons.prev = document.getElementById(SLIDER_PREV);
@@ -88,6 +89,13 @@ class Template {
             }, '');
         
         return pointsHtml;
+    }
+
+    #createAnimation() {
+        this.elements.items.forEach(item => {
+            item.style.opacity = 0;
+            item.style.transition `all ${this.state.getDuration()}ms ease-in-out`;
+        });
     }
 
 
