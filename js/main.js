@@ -50,6 +50,10 @@ class Slider {
         this.render.renderPlay(mode);
       });
 
+      eventsInitiation.click.onPoint((index) => {
+        this.render.render(() => this.navigation.moveTo(index));
+      });
+
       eventsInitiation.swipes.swipe({
         toLeft: () => this.render.render(() => this.navigation.prevStep()),
         toRight: () => this.render.render(() => this.navigation.nextStep()),
