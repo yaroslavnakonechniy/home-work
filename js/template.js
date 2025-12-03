@@ -83,7 +83,7 @@ class Template {
 
     #createPointsHTML() {
         const pointsHtml = new Array(this.state.getNumberOfSlides())
-            .fill()
+            .fill(0)
             .reduce((template,  _, index) => {
                 return `${template}<span data-index='${index}'></span>`
             }, '');
@@ -94,7 +94,7 @@ class Template {
     #createAnimation() {
         this.elements.items.forEach(item => {
             item.style.opacity = 0;
-            item.style.transition `all ${this.state.getDuration()}ms ease-in-out`;
+            item.style.transition = `all ${this.state.getDuration()}ms ease-in-out`;
         });
     }
 

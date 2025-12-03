@@ -8,10 +8,10 @@ class State {
     }
 
     increaseIndex() {
-      return ++this.curentIndex;
+      return ++this.currentIndex;
     }
     decreaseIndex() {
-      return --this.curentIndex;
+      return --this.currentIndex;
     }
     setIndex(index) {
         this.currentIndex = index;
@@ -19,7 +19,7 @@ class State {
         return this.currentIndex;
     }
     getIndex() {
-      return this.curentIndex;
+      return this.currentIndex;
     }
     getNumberOfSlides() {
         return this.numberOfSlides;
@@ -50,7 +50,7 @@ class State {
     getInterval() {
         return this.interval;
     }
-    setIntervar(interval) {
+    setInterval(interval) {
         if (interval) {
             this.interval = interval + this.duration;
         }

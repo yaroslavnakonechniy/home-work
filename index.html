@@ -43,12 +43,16 @@
   <script src="js/main.js"></script>
 
   <script>
-    const state = new State();
+/*  const state = new State();
     const template = new Template({ state });
     const navigation = new Navigation({ state });
 
     template.init({ container: ".slider", items: ".slider__item", });
-
+ */
+    slider.init(
+      {container: ".slider", items: ".slider__item", },
+      {interval: 1000, duration: 300, }
+    )
 
 
   </script>

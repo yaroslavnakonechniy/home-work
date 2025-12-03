@@ -56,17 +56,17 @@ class SwipeEvents {
         this.template = template;
     }
 
-    swipes(swipes) {
+    swipe(swipes) {
         let startPositionX = 0;
         const getX = (e) => e.offsetX || e.changedTouches?.[0].pageX;
         
-        mousedownFn = (e) => {
+        this.#mousedownFn = (e) => {
             e.preventDefault();
 
             startPositionX = getX(e);
         };
 
-        mouseupFn = (e) => {
+        this.#mouseupFn = (e) => {
             e.preventDefault();
 
             getX(e) < startPositionX ? swipes.toLeft() : swipes.toRight();

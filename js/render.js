@@ -5,12 +5,12 @@ class Render {
     }
 
     render(action = () => {}) {
-        const prevIndex = this.navigation.geCurentStep();
+        const prevIndex = this.navigation.getCurrentStep();
         action();
-        const curentIndex = this.navigation.geCurentStep();
+        const currentIndex = this.navigation.getCurrentStep();
 
-        this.#renderSlide({prevIndex, curentIndex});
-        this.#renderPoints({prevIndex, curentIndex});
+        this.#renderSlide({prevIndex, currentIndex});
+        this.#renderPoints({prevIndex, currentIndex});
     }
 
     renderPlay() {
@@ -20,13 +20,13 @@ class Render {
         player.textContent = player.classList.contains('active') ? "Stop" : "Play";
     }
 
-    #renderPoints({prevIndex, curentIndex}) {
+    #renderPoints({ prevIndex, currentIndex }) {
         this.template.elements.points.items[prevIndex].classList.remove('active');
-        this.template.elements.points.items[curentIndex].classList.add('active');
+        this.template.elements.points.items[currentIndex].classList.add('active');
     }
 
-    #renderSlide({prevIndex, curentIndex}) {
+    #renderSlide({ prevIndex, currentIndex }) {
         this.template.elements.items[prevIndex].style.opacity = 0;
-        this.template.elements.items[curentIndex].style.opacity = 1;
+        this.template.elements.items[currentIndex].style.opacity = 1;
     }
 }
