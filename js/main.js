@@ -20,7 +20,8 @@ class Slider {
   ) {
       this.state.setDuration(options.duration);
       this.state.setInterval(options.interval);
-
+      
+      this.state.generateSliderID();
 
       this.template.init(elements);
 
@@ -67,21 +68,27 @@ class Slider {
   destroy() {
     this.events.destroy();
   }
+
+  static create() {
+    const state = new State();
+    const template = new Template({ state });
+    const navigation = new Navigation({ state });
+    const events = new Events({ state, template });
+    const render = new Render({ navigation, template });
+
+
+
+    const slider = new Slider({
+      state, 
+      template, 
+      navigation, 
+      events, 
+      render,
+    });
+
+    return slider;
+  }
 }
 
-const state = new State();
-const template = new Template({ state });
-const navigation = new Navigation({ state });
-const events = new Events({ state, template });
-const render = new Render({ navigation, template });
 
-
-
-const slider = new Slider({
-  state, 
-  template, 
-  navigation, 
-  events, 
-  render,
-});
 

@@ -137,9 +137,9 @@ class Events {
     }
 
     init() {
-        this.#click = new ClickEvents ({ state, template });
-        this.#swipes = new SwipeEvents ({ state, template });
-        this.#interval = new IntervalEvents ({ state, template });
+        this.#click = new ClickEvents ({ state: this.state, template: this.template });
+        this.#swipes = new SwipeEvents ({ state: this.state, template: this.template });
+        this.#interval = new IntervalEvents ({ state: this.state, template: this.template });
         this.#keyboard = new KeyboardEvents ();
         
         return {

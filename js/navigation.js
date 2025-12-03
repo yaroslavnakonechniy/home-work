@@ -3,7 +3,6 @@ class Navigation {
         this.state = state;
     }
 
-
   getStep(curentIndex) {
     return curentIndex - this.state.getNumberOfSlides() * (Math.floor(curentIndex / this.state.getNumberOfSlides()));
   }

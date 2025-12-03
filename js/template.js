@@ -28,11 +28,11 @@ class Template {
         this.#setElements(elements);
         this.#createAnimation();
 
-        this.elements.list = document.getElementById(SLIDER_LIST);
-        this.elements.buttons.prev = document.getElementById(SLIDER_PREV);
-        this.elements.buttons.next = document.getElementById(SLIDER_NEXT);
-        this.elements.buttons.play = document.getElementById(SLIDER_PLAY);
-        this.elements.points.container = document.getElementById(SLIDER_POINTS);
+        this.elements.list = document.getElementById(this.#convertOriginalID( SLIDER_LIST ));
+        this.elements.buttons.prev = document.getElementById(this.#convertOriginalID( SLIDER_PREV ));
+        this.elements.buttons.next = document.getElementById(this.#convertOriginalID( SLIDER_NEXT ));
+        this.elements.buttons.play = document.getElementById(this.#convertOriginalID( SLIDER_PLAY ));
+        this.elements.points.container = document.getElementById(this.#convertOriginalID( SLIDER_POINTS ));
         this.elements.points.items = this.elements.points.container.children;
     }
 
@@ -57,7 +57,7 @@ class Template {
     #createSlideListHTML() {
         const itemsHTML = this.elements.container.innerHTML;
         const slideListHTML = `
-            <div id="${SLIDER_LIST}" class="slider__list">
+            <div id="${this.#convertOriginalID(SLIDER_LIST)}" class="slider__list">
                 ${itemsHTML}
             </div>
         `;
@@ -68,11 +68,11 @@ class Template {
 
     #createControlsHTML() {
         const controlsHTML = `
-            <div id="${SLIDER_CONTROLS}" class="slider__controls">
-                <button id="${SLIDER_PLAY}" class="slider__play-btn">Play</button>
-                <button id="${SLIDER_PREV}" class="slider__prev-btn"> <- Prev</button>
-                <button id="${SLIDER_NEXT}" class="slider__next-btn">Next -> </button>
-                <div id="${SLIDER_POINTS}" class="slider__points">
+            <div id="${this.#convertOriginalID(SLIDER_CONTROLS)}" class="slider__controls">
+                <button id="${this.#convertOriginalID(SLIDER_PLAY)}" class="slider__play-btn">Play</button>
+                <button id="${this.#convertOriginalID(SLIDER_PREV)}" class="slider__prev-btn"> <- Prev</button>
+                <button id="${this.#convertOriginalID(SLIDER_NEXT)}" class="slider__next-btn">Next -> </button>
+                <div id="${this.#convertOriginalID(SLIDER_POINTS)}" class="slider__points">
                     ${this.#createPointsHTML()}
                 </div>
             </div>
@@ -98,5 +98,7 @@ class Template {
         });
     }
 
-
+    #convertOriginalID(originalID) {
+        return convertOriginalID(this.state.getSliderID(), originalID);
+    }
 }

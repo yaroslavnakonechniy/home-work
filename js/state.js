@@ -5,6 +5,7 @@ class State {
         this.mode = 'play';
         this.numberOfIndex = 0;
         this.currentIndex = 0;
+        this.sliderID = null;
     }
 
     increaseIndex() {
@@ -56,5 +57,13 @@ class State {
         }
 
         return this.interval;
+    }
+
+    generateSliderID() {
+        this.sliderID = generateSliderID();
+    }
+
+    getSliderID() {
+        return this.sliderID;
     }
 }
