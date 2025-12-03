@@ -1,11 +1,12 @@
 .slider, .slider2 {
 	position: relative;
 	width: 400px;
-	height: 400px;
+	height: 200px;
     margin: 0 auto;
 	background-color: rgb(176, 207, 180);
 	text-align: center;
 	padding: 20px;
+	border: 2px solid green;
 
 
 	&__controls {
