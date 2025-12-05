@@ -7,93 +7,54 @@ function generateNumber(minNumber, maxNumber) {
     const number = [];
 
     for (let i = minNumber; i <= maxNumber; i++){
-        number.push(i);
+        if ( i <= 0 ) {
+            number.push({age: i, expected: null});
+        } else if ( i <= 24 && i > 0 ) {
+            number.push({age: i, expected: 'Дитинство'});
+        } else if ( i <= 44 && i > 24 ) {
+            number.push({age: i, expected: 'Молодість'});
+        } else if ( i <= 65 && i > 44 ) {
+            number.push({age: i, expected: 'Зрілість'});
+        } else if ( i <= 75 && i > 65 ) {
+            number.push({age: i, expected: 'Старість'});
+        } else if ( i <= 90 && i > 75 ) {
+            number.push({age: i, expected: 'Довголіття'});
+        } else if ( i <= 122 && i > 90 ) {
+            number.push({age: i, expected: 'Рекорд'});
+        } else {
+            number.push({age: i, expected: null});
+        }
     }
 
     return number;
 }
 
 describe('functionClassification', () => {
-    const casesAge = generateNumber(-5, 130);
-    const casesWeek = generateNumber(-3, 10);
+    const casesage = generateNumber(-5, 130);
 
-    casesAge.forEach((age) => {
-        if ( age <= 0 ) {
-            test(`ageClassification(${age})`, () => {
-                expect(ageClassification(age)).toBe(null);
-            });
-        } else if ( age <= 24 && age > 0 ) {
-            test(`ageClassification(${age})`, () => {
-                expect(ageClassification(age)).toBe('Дитинство');
-            });
-        } else if ( age <= 44 && age > 24 ) {
-            test(`ageClassification(${age})`, () => {
-                expect(ageClassification(age)).toBe('Молодість');
-            });
-        } else if ( age <= 65 && age > 44 ) {
-            test(`ageClassification(${age})`, () => {
-                expect(ageClassification(age)).toBe('Зрілість');
-            });
-        } else if ( age <= 75 && age > 65 ) {
-            test(`ageClassification(${age})`, () => {
-                expect(ageClassification(age)).toBe('Старість');
-            });
-        } else if ( age <= 90 && age > 75 ) {
-            test(`ageClassification(${age})`, () => {
-                expect(ageClassification(age)).toBe('Довголіття');
-            });
-        } else if ( age <= 122 && age > 90 ) {
-            test(`ageClassification(${age})`, () => {
-                expect(ageClassification(age)).toBe('Рекорд');
-            });
-        } else {
-            test(`ageClassification(${age})`, () => {
-                expect(ageClassification(age)).toBe(null);
-            });
-        }
+    casesage.forEach(({age, expected}) => {
+        test(`ageClassification(${age}: ${expected})`, () => {
+            expect(ageClassification(age)).toBe(expected);
+        });
     });
 
-    casesWeek.forEach((number) => {
-        switch (number) {
-            case 1:
-                test(`weekClassification(${number})`, () => {
-                    expect(weekFn(number)).toBe('Понеділок');
-                });
-            break
-            case 2:
-                test(`weekClassification(${number})`, () => {
-                    expect(weekFn(number)).toBe('Вівторок');
-                });
-            break
-            case 3:
-                test(`weekClassification(${number})`, () => {
-                    expect(weekFn(number)).toBe('Середа');
-                });
-            break
-            case 4:
-                test(`weekClassification(${number})`, () => {
-                    expect(weekFn(number)).toBe('Четвер');
-                });
-            break
-            case 5:
-                test(`weekClassification(${number})`, () => {
-                    expect(weekFn(number)).toBe('П\ятниця');
-                });
-            break
-            case 6:
-                test(`weekClassification(${number})`, () => {
-                    expect(weekFn(number)).toBe('Субота');
-                });
-            break
-            case 7:
-                test(`weekClassification(${number})`, () => {
-                    expect(weekFn(number)).toBe('Неділя');
-                });
-            break
-            default:
-                test(`weekClassification(${number})`, () => {
-                    expect(weekFn(number)).toBe(null);
-                });
-        }
+    const casesWeek = [
+        {numberOfDay: 0, nameOfWeek: null},
+        {numberOfDay: 1, nameOfWeek: 'Понеділок'},
+        {numberOfDay: 2, nameOfWeek: 'Вівторок'},
+        {numberOfDay: 3, nameOfWeek: 'Середа'},
+        {numberOfDay: 4, nameOfWeek: 'Четвер'},
+        {numberOfDay: 5, nameOfWeek: 'П\ятниця'},
+        {numberOfDay: 6, nameOfWeek: 'Субота'},
+        {numberOfDay: 7, nameOfWeek: 'Неділя'},
+        {numberOfDay: 8, nameOfWeek: null},
+        {numberOfDay: -3, nameOfWeek: null},
+        {numberOfDay: 0.6, nameOfWeek: null},
+    ]
+
+    casesWeek.forEach(({numberOfDay, nameOfWeek}) => {
+        test(`weekClassification(${numberOfDay}): ${nameOfWeek}`, () => {
+            expect(weekFn(numberOfDay)).toBe(nameOfWeek);
+        });
     })
 });
