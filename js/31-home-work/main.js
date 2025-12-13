@@ -118,3 +118,18 @@ async function deleteData(id) {
     return error.message;
   }
 }
+const data = {
+    id: 2,
+    name: 'news',
+}
+
+Promise.allSettled([
+    getData('/post/1'), 
+    postData('/post/1', data), 
+    putData(3, data),
+    patchData(4, data), 
+    deleteData(1)])
+    .then((results) => {results.forEach((result, index) => {
+        console.log(`result${index + 1}:`, result);
+        });
+    });
